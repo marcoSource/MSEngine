@@ -1,5 +1,7 @@
 package com.marcoSource.engine;
 
+import com.marcoSource.engine.util.ColorUtil;
+
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.security.Key;
@@ -71,7 +73,6 @@ public class Game implements Runnable{
                     frameTime = 0;
                     fps = frames;
                     frames = 0;
-                    System.out.println("FPS: " + fps);
                 }
             }
 
@@ -79,6 +80,7 @@ public class Game implements Runnable{
                 game.render(this, renderer);
                 screen.update();
                 renderer.clear();
+                renderer.drawText("FPS: " + fps, 0, 0, ColorUtil.RED);
                 frames++;
             } else {
                 try {

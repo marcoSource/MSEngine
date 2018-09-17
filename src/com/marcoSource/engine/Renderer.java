@@ -1,11 +1,14 @@
 package com.marcoSource.engine;
 
+import com.marcoSource.engine.gfx.Font;
 import com.marcoSource.engine.gfx.Image;
 import com.marcoSource.engine.gfx2d.ImageTile;
 
 import java.awt.image.DataBufferInt;
 
 public class Renderer {
+
+    private Font font = Font.DEFAULT;
 
     private int pixelWidth, pixelHeight;
     private int[] pixels;
@@ -67,7 +70,7 @@ public class Renderer {
         int newWidth = image.getTileWidth();
         int newHeight = image.getTileHeight();
 
-        //Render what is visible
+        //Render when is visible
         if(offX < 0) { newX -= offX; }
         if(offY < 0) { newY -= offY; }
         if(newWidth + offX >= pixelWidth) { newWidth -= newWidth + offX - pixelWidth; }
@@ -77,6 +80,27 @@ public class Renderer {
             for (int x = 0; x < newWidth; x++) {
                 setPixels(x + offX, y + offY, image.getPixels()[(x + tileX * image.getTileWidth()) + (y + tileY * image.getTileHeight()) * image.getWidth()]);
             }
+        }
+    }
+
+    public void drawText(String text, int offX, int offY, int color){
+
+        text = text.toUpperCase();
+
+        int offset = 0;
+
+        for(int i = 0; i < text.length(); i++){
+            int unicode = text.codePointAt(i) -32;
+
+            for(int y = 0; y < font.getFontImage().getHeight(); y++){
+                for(int x = 0; x < font.getWidths()[unicode]; x++){
+                    if(font.getFontImage().getPixels()[(x + font.getOffsets()[unicode]) + y * font.getFontImage().getWidth()] == 0xffffffff){
+                        setPixels(x + offX + offset, y + offY, color);
+                    }
+                }
+            }
+
+            offset += font.getWidths()[unicode];
         }
     }
 }
