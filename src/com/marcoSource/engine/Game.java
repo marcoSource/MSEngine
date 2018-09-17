@@ -23,7 +23,7 @@ public class Game implements Runnable{
 
     private float scale = 1f;
 
-    private String title = "MSEngine v0.01";
+    private String title = GameConfig.windowTitle;
 
     public Game(AbstractGame game) {
         this.game = game;
@@ -78,9 +78,9 @@ public class Game implements Runnable{
 
             if (render){
                 game.render(this, renderer);
+                if(GameConfig.fps){renderer.drawText("FPS: " + fps, 0, 0, ColorUtil.DARK_BLUE);}
                 screen.update();
                 renderer.clear();
-                renderer.drawText("FPS: " + fps, 0, 0, ColorUtil.RED);
                 frames++;
             } else {
                 try {
